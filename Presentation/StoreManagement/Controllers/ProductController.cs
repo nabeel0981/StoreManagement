@@ -1,27 +1,33 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MS.Business.Models;
+using SM.Business.DataServices;
 
 namespace StoreManagement.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: ProductController
-        public ActionResult Index()
+        private readonly ProductService _productService;
+        public ProductController(ProductService productService)
         {
-            var product = new List<ProductModel>();
-            product.Add(new ProductModel { Id=1 , Name ="Product1"});
-            product.Add(new ProductModel { Id = 2, Name = "Product2" });
-            product.Add(new ProductModel { Id = 3, Name = "Product3" });
-            product.Add(new ProductModel { Id = 4, Name = "Product4" });
-            product.Add(new ProductModel { Id = 5, Name = "Product5" });
-            return View(product);
+            _productService = productService;
         }
-
-        // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        // GET: ProductController
+        public ActionResult Index(string? search)
         {
-            return View();
+            List<ProductModel> products = null;
+            
+            if (search == null)
+            {
+                products= _productService.GetAllProducts();
+            }
+            else
+            {
+                products = _productService.GetAllProducts().Where(x => x.Name.ToLower().Trim().Contains(search.Trim().ToLower())).ToList();
+
+            }
+
+            return View(products);
         }
 
         // GET: ProductController/Create
@@ -33,10 +39,12 @@ namespace StoreManagement.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ProductModel model)
         {
+
             try
             {
+                _productService.Add(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -48,16 +56,22 @@ namespace StoreManagement.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var product = _productService.GetAllProducts().Where(x=>x.Id==id).FirstOrDefault();
+            return View(product);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(ProductModel model)
         {
             try
             {
+              var products  =  _productService.GetAllProducts().Where(x => x.Id == model.Id).FirstOrDefault();
+              if(products!=null)
+                {
+                    products.Name = model.Name;
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -69,22 +83,10 @@ namespace StoreManagement.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+           _productService.DeleteProduct(id);
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
     }
 }

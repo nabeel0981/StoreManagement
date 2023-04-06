@@ -1,7 +1,13 @@
+using SM.Business.DataServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+//Adding Custom Configuration
+builder.Services.AddSingleton<ProductService>();
 
 var app = builder.Build();
 
