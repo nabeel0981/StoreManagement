@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BusinessServices\MS.Business.Models\MS.Business.Models.csproj" />
+    <ProjectReference Include="..\..\BusinessServices\SM.Business.DataServices\SM.Business.DataServices.csproj" />
   </ItemGroup>
 
 </Project>
