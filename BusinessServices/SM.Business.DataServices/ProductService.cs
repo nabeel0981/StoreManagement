@@ -1,37 +1,56 @@
 ﻿using MS.Business.Models;
+using SM.Business.Interfaces;
+using SM.Data;
 
 namespace SM.Business.DataServices
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private List<ProductModel> product = new List<ProductModel>();
-
-        public List<ProductModel> GetAllProducts() 
+       private readonly StoreManagementDbContext _dbContext;
+        public ProductService(StoreManagementDbContext dbContext)
         {
-            product.Add(new ProductModel { Id = 1, Name = "Product1" });
-            product.Add(new ProductModel { Id = 2, Name = "Product2" });
-            product.Add(new ProductModel { Id = 3, Name = "Product3" });
-            product.Add(new ProductModel { Id = 4, Name = "Product4" });
-            product.Add(new ProductModel { Id = 5, Name = "Product5" });
-            return product;
+            _dbContext = dbContext;
+        }
+
+        public  List<ProductModel> GetAllProducts() 
+        {
+            var allproducts =  _dbContext.products.ToList();
+            var productsModels = allproducts.Select(x => new ProductModel { Id = x.Id, Name = x.Name }).ToList();
+            return productsModels;
         }
 
         public void Add(ProductModel model)
         {
             
-            product.Add(model);
+            _dbContext.products.Add(new Data.Models.Product { Id=model.Id , Name=model.Name});
+            _dbContext.SaveChanges();
           
+        }
+
+        public void UpdateProduct(ProductModel model)
+        {
+            var index = _dbContext.products.FirstOrDefault(x =>x.Id == model.Id);
+            
+            if(index!=null)
+            {
+                index.Name = model.Name;
+            }
+             
+            _dbContext.products.Update(index);
+            _dbContext.SaveChanges();
+           
         }
       
        
         public void DeleteProduct(int id)
         {
-            var prod = product.Where(x => x.Id == id).FirstOrDefault();
+            var prod = _dbContext.products.Where(x => x.Id == id).FirstOrDefault();
             if (prod != null)
             {
-                product.Remove(prod);
+                _dbContext.products.Remove(prod);
+                _dbContext.SaveChanges();
                 
             }
-     }
+        }
     }
 }

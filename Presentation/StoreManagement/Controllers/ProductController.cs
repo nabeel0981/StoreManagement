@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using MS.Business.Models;
 using SM.Business.DataServices;
+using SM.Business.Interfaces;
 
 namespace StoreManagement.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductService _productService;
-        public ProductController(ProductService productService)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
             _productService = productService;
         }
@@ -57,6 +58,7 @@ namespace StoreManagement.Controllers
         public ActionResult Edit(int id)
         {
             var product = _productService.GetAllProducts().Where(x=>x.Id==id).FirstOrDefault();
+            
             return View(product);
         }
 
@@ -67,11 +69,8 @@ namespace StoreManagement.Controllers
         {
             try
             {
-              var products  =  _productService.GetAllProducts().Where(x => x.Id == model.Id).FirstOrDefault();
-              if(products!=null)
-                {
-                    products.Name = model.Name;
-                }
+                _productService.UpdateProduct(model);
+             
                 return RedirectToAction(nameof(Index));
             }
             catch
