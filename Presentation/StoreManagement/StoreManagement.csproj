@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BusinessServices\MS.Business.Models\MS.Business.Models.csproj" />
     <ProjectReference Include="..\..\BusinessServices\SM.Business.DataServices\SM.Business.DataServices.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\SM.DependencyInjection\SM.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Repositories\SM.Data\SM.Data.csproj" />
   </ItemGroup>
 
