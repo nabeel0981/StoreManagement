@@ -16,7 +16,7 @@ namespace StoreManagement.Controllers
         // GET: ProductController
         public ActionResult Index(string? search)
         {
-            List<ProductModel> products = null;
+            List<ProductModel> products ;
             
             if (search == null)
             {
@@ -24,7 +24,7 @@ namespace StoreManagement.Controllers
             }
             else
             {
-                products = _productService.GetAllProducts().Where(x => x.Name.ToLower().Trim().Contains(search.Trim().ToLower())).ToList();
+                products = _productService.Search(search);
 
             }
 

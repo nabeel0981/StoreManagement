@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SM.Business.DataServices;
 using SM.Business.Interfaces;
 using SM.Data;
+using SM.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddControllersWithViews();
 
 //Adding Custom Configuration
 builder.Services.AddScoped<IProductService , ProductService>();
-
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
