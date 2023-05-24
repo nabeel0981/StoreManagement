@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MS.Business.Models;
+using SM.Business.Interfaces;
 
 namespace StoreManagement.Controllers
 {
     public class StoreController : Controller
     {
+        private readonly IStoreService _storeService;
+        public StoreController(IStoreService storeService)
+        {
+            _storeService = storeService;
+        }
+
         // GET: StoreController
         public ActionResult Index()
         {
-            List<StoreModel> stores = new List<StoreModel>();
-            stores.Add(new StoreModel { Id = 1, Name = "Store 1", Description = "Description", Location = "Islamabad" });
-            return View(stores);
+           var models = _storeService.GetAll();
+            return View(models);
         }
 
         // GET: StoreController/Details/5

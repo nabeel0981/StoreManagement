@@ -2,12 +2,8 @@
 
 namespace SM.Business.Interfaces
 {
-    public interface IProductService
+    public interface IProductService : IGenericService<ProductModel>
     {
-        public List<ProductModel> GetAllProducts();
-        public List<ProductModel> Search(string SerachTerm);
-        public void Add(ProductModel model);
-        public void UpdateProduct(ProductModel model);
-        public void DeleteProduct(int id);
+     public  List<ProductModel> Search(string SerachTerm);
     }
 }
