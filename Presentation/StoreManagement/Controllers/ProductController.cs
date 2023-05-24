@@ -20,7 +20,7 @@ namespace StoreManagement.Controllers
             
             if (search == null)
             {
-                products= _productService.GetAllProducts();
+                products= _productService.GetAll();
             }
             else
             {
@@ -57,7 +57,7 @@ namespace StoreManagement.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            var product = _productService.GetAllProducts().Where(x=>x.Id==id).FirstOrDefault();
+            var product = _productService.GetAll().Where(x=>x.Id==id).FirstOrDefault();
             
             return View(product);
         }
@@ -69,7 +69,7 @@ namespace StoreManagement.Controllers
         {
             try
             {
-                _productService.UpdateProduct(model);
+                _productService.Update(model);
              
                 return RedirectToAction(nameof(Index));
             }
@@ -82,7 +82,7 @@ namespace StoreManagement.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-           _productService.DeleteProduct(id);
+           _productService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 

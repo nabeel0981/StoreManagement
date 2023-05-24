@@ -11,7 +11,7 @@ namespace SM.Data
         {
         }
         public DbSet<Product> products { get; set; }
-
+        public DbSet<Store> stores { get; set; }
 
     }
 }

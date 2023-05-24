@@ -15,7 +15,9 @@ builder.Services.AddControllersWithViews();
 
 //Adding Custom Configuration
 builder.Services.AddScoped<IProductService , ProductService>();
+builder.Services.AddScoped<IStoreService , StoreService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(typeof(BusinessEntityMappings));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
