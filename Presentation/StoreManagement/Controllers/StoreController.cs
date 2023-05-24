@@ -35,10 +35,11 @@ namespace StoreManagement.Controllers
         // POST: StoreController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(StoreModel model)
         {
             try
             {
+                _storeService.Add(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -50,16 +51,18 @@ namespace StoreManagement.Controllers
         // GET: StoreController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var storeModel = _storeService.GetById(id);
+            return View(storeModel);
         }
 
         // POST: StoreController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(StoreModel model)
         {
             try
             {
+                _storeService.Update(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -71,22 +74,15 @@ namespace StoreManagement.Controllers
         // GET: StoreController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: StoreController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
             try
             {
+                _storeService.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
             }
-        }
+        }   
     }
 }
